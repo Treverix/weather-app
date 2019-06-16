@@ -8,9 +8,6 @@ const geocode = (address, callback) => {
     qs: { access_token: process.env.MAPBOX_TOKEN, limit: '1'},
     json: true
   }, (err, {statusCode, body}) => {
-    console.log(err);
-    console.log(statusCode);
-    console.log(body);
     if (err) {
       // catch network trouble
       callback('Unable to connect to mapbox service');
@@ -22,10 +19,12 @@ const geocode = (address, callback) => {
       // here the query does not return a single feature
       callback('No location found for ' + address)
     } else {
-      const [lon, lat] = body.features[0].center
+      const feature = body.features[0];
+      const [lon, lat] = feature.center
+      const location = feature.place_name
       console.log(`Location for "${address}": ${lat}, ${lon}`)
 
-      callback(undefined, {lat, lon})
+      callback(undefined, {lat, lon, location})
     }
   })
 }

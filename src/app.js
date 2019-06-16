@@ -55,7 +55,7 @@ app.get('/weather', (req, res) => {
     })
   }
 
-  geocode(req.query.address, (error, {lat, lon} = {}) => {
+  geocode(req.query.address, (error, {lat, lon, location} = {}) => {
 
     if (error) {
       res.send({error: 'Error: ' + error})
@@ -67,6 +67,7 @@ app.get('/weather', (req, res) => {
           const today = daily.data[0]
           res.send({
             summary: today.summary,
+            location,
             forecast: `It is currently ${currently.temperature}°C out. There is a ${currently.precipProbability * 100}% chance of rain.`
           })
         }
